@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskA3- To-Do-List</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="./cssTodo/csstodo.css" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h3 class="text-center mb-4">ToDo List App 📋</h3>
+      <!-- Add task form -->
+      <form id="taskForm" class="task-form">
+        <!-- <div class="row g-0"> -->
+          <!-- input -->
+          <div class="input-group">
+            <input
+              class="form-control"
+              type="text"
+              id="taskInput"
+              placeholder="Enter a task"
+            />
+            <button class="btn btn-primary" id="addBtn" type="submit">
+              Add Task
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!--Task List  -->
+      <ul id="taskList" class="taskLis list-group mt-3"></ul>
+    </div>
+    <script src="./jsTodo/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
