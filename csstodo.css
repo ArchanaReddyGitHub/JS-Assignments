@@ -1,0 +1,159 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* background-color: #f4f6f8; */
+  background-color: rgb(200, 152, 245);
+  min-height: 100vh;
+}
+.container {
+  max-width: 700px;
+  margin: 60px auto;
+  background-color: rgb(216, 194, 222);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h3 {
+  color: navy;
+}
+#taskForm {
+  width: 100%;
+}
+#taskInput {
+  height: 45px;
+  border-radius: 6px 0 0 6px;
+  background: rgb(248, 233, 233);
+}
+#taskInput:hover,
+#taskInput:focus {
+  background-color: lightblue;
+  color: navy;
+  font-weight: bold;
+}
+#addBtn {
+  height: 45px;
+  min-height: 30px;
+  border-radius: 0 10px 10px 0;
+}
+/* task list */
+#taskList {
+  width: 100%;
+  max-width: 700px;
+  margin: 15px auto 0;
+  border-radius: 10px;
+}
+/* Individual group */
+.list-group-item {
+  background: rgb(248, 233, 233);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 50px;
+  padding: 10px 12px;
+}
+/* left side checkbox */
+.taskContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  color: navy;
+  font-weight: bold;
+}
+/* .taskText {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+} */
+.task-checkbox {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+/* right side buttons */
+.taskAction {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.edit-btn,
+.delete-btn
+/* .completed-tick  */ {
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 18px;
+  padding: 4px;
+  border: none;
+  background: none;
+}
+
+.bi {
+  fill: antiquewhite;
+}
+/* .completed-tick {
+  text-decoration: line-through;
+  color: gray;
+} */
+#ErrorMsg {
+  color: red;
+  margin: 30px auto;
+  padding: 20px 12px;
+}
+@media (max-width: 576px) {
+  .container {
+    width: 95%;
+    margin: 30px auto;
+    padding: 20px 12px;
+  }
+  h3 {
+    font-size: 22px;
+    margin-bottom: 20px !important;
+  }
+  #taskInput {
+    height: 44px;
+    font-size: 14px;
+  }
+  #addBtn {
+    height: 44ps;
+    min-width: 80px;
+    font-size: 14px;
+  }
+  .list-group-item {
+    padding: 9ps 8px;
+    gap: 5px;
+  }
+  .taskContent {
+    gap: 8px;
+  }
+  .taskText {
+    font-size: 14px;
+  }
+  .edit-btn,
+  .delete-btn {
+    margin-left: 3px;
+    padding: 3px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 350px) {
+  .container {
+    width: 80%;
+    padding: 15px 8px;
+  }
+  #addBtn {
+    min-width: 70px;
+    font-size: 13px;
+  }
+  .taskText {
+    font-size: 13px;
+  }
+  .edit-btn,
+  .delete-btn {
+    font-size: 15px;
+  }
+}
