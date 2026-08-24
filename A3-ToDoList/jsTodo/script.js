@@ -1,7 +1,7 @@
 const taskForm = document.getElementById("taskForm");
 const taskInput = document.getElementById("taskInput");
 const taskList = document.getElementById("taskList");
-
+const taskDate = document.getElementById("taskDate");
 //get task from local storage
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
@@ -12,7 +12,7 @@ function saveTasks() {
 
 //Display all saved tasks when page load
 function loadTasks() {
-  taskList.innerHTML = " ";
+  taskList.innerHTML = "";
 
   tasks.sort(function (a, b) {
     return a.id - b.id;
@@ -27,10 +27,12 @@ function loadTasks() {
 function createTaskElement(task) {
   // Create a List li
   const li = document.createElement("li");
+
   li.className = "list-group-item";
-  // li.style.display = "flex";
-  // li.style.alignItems = "center";
-  // li.style.justifyContent = "space-between";
+
+  //left side
+  const taskContent = document.createElement("div");
+  taskContent.className = "taskContent";
 
   //Create checkbox
   const checkbox = document.createElement("input");
@@ -40,17 +42,42 @@ function createTaskElement(task) {
 
   //Create Task text
   const span = document.createElement("span");
+  span.className = "taskText";
   span.innerText = task.text;
 
-  //Create Edit Button
+  taskContent.appendChild(checkbox);
+  taskContent.appendChild(span);
+
+  //Date column
+  const dateSpan = document.createElement("span");
+  dateSpan.className = "taskDate";
+  if (task.date) {
+    const date = new Date(task.date + "T00:00:00");
+
+    dateSpan.innerText = date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+  //Right side Action Button
+  const taskAction = document.createElement("div");
+  taskAction.className = "taskAction";
+
   const editButton = document.createElement("button");
   editButton.innerHTML = `<i class="bi bi-pencil"></i>`;
   editButton.className = "edit-btn";
+  editButton.type = "button";
 
   //Create Delete Button
   const deleteButton = document.createElement("button");
   deleteButton.innerHTML = `<i class="bi bi-trash"></i>`;
   deleteButton.className = "delete-btn";
+  deleteButton.type = "button";
+
+  taskAction.appendChild(editButton);
+  taskAction.appendChild(deleteButton);
 
   //Hide action buttons if task not completed
   if (!task.completed) {
@@ -62,30 +89,15 @@ function createTaskElement(task) {
   if (task.completed) {
     span.classList.add("completed");
   }
-  //left side
-  const taskContent = document.createElement("div");
-  taskContent.className = "taskContent";
-  span.className = "taskText";
 
-  taskContent.appendChild(checkbox);
-  taskContent.appendChild(span);
-
-  //Right side
-  const taskAction = document.createElement("div");
-  taskAction.className = "taskAction";
-
-  taskAction.appendChild(editButton);
-  taskAction.appendChild(deleteButton);
-
-  //Add content to list (li)
+  //Add everything to list (li)
   li.appendChild(taskContent);
+  li.appendChild(dateSpan);
   li.appendChild(taskAction);
 
-  //add li to task list
-  //   taskList.appendChild(li);
   taskList.prepend(li);
 
-  //checkbox event listener
+  //checkbox event
   checkbox.addEventListener("change", function () {
     task.completed = checkbox.checked;
 
@@ -101,15 +113,54 @@ function createTaskElement(task) {
     saveTasks();
   });
 
-  //update event listener
+  //update/edit event
   editButton.addEventListener("click", function () {
-    const updateTask = prompt("Update Your Task ", span.innerText);
-    if (updateTask !== "" && updateTask !== null) {
-      span.innerText = updateTask.trim();
-      //update task object
-      task.text = updateTask.trim();
-      //save update task
-      saveTasks();
+    const updateTask = prompt("Update Your Task ", task.text);
+
+    if (updateTask === null) {
+      return;
+    }
+
+    if (updateTask.trim() === "") {
+      alert("Task can't be empty");
+      return;
+    }
+    task.text = updateTask.trim();
+    span.innerText = task.text;
+
+    saveTasks();
+
+    //edit/update date
+    const dateEditor = document.createElement("input");
+    dateEditor.type = "date";
+    dateEditor.value = task.date || "";
+    dateEditor.className = "dateEditor";
+
+    dateSpan.replaceWith(dateEditor);
+
+    dateEditor.addEventListener("change", function () {
+      if (dateEditor.value !== "") {
+        task.date = dateEditor.value;
+
+        const date = new Date(task.date + "T00:00:00");
+        dateSpan.innerText = date.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+
+        dateEditor.replaceWith(dateSpan);
+        saveTasks();
+      } else {
+        dateEditor.replaceWith(dateSpan);
+      }
+      // dateEditor.remove();
+    });
+    //open calender
+    if (typeof dateEditor.showPicker == "function") {
+      dateEditor.showPicker();
+    } else {
+      dateEditor.focus();
     }
   });
 
@@ -122,10 +173,9 @@ function createTaskElement(task) {
       tasks = tasks.filter(function (item) {
         return item.id !== task.id;
       });
-      //save updated array
+
       saveTasks();
 
-      //remove from page
       li.remove();
     }
   });
@@ -133,13 +183,23 @@ function createTaskElement(task) {
 
 function addTask() {
   const taskText = taskInput.value.trim();
+  const targetDate = taskDate.value;
   if (taskText === "") {
     alert("Please Enter Task");
     return;
   }
+  if (targetDate === "") {
+    alert("select target finish date");
+    return;
+  }
 
   //Create task object
-  const task = { id: Date.now(), text: taskText, completed: false };
+  const task = {
+    id: Date.now(),
+    text: taskText,
+    completed: false,
+    date: targetDate,
+  };
 
   //add task to array
   //   tasks.push(task);
@@ -153,6 +213,7 @@ function addTask() {
 
   //clear input
   taskInput.value = "";
+  taskDate.value = "";
 }
 //Form event listener
 taskForm.addEventListener("submit", function (e) {
